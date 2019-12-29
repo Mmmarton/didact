@@ -84,9 +84,9 @@ function commitWork(fiber) {
   }
 
   const domParent = fiber.parent.dom;
-  if (fiber.effectTag === 'PLACEMENT' && fiber.dom !== null) {
+  if (fiber.effectTag === 'PLACEMENT' && fiber.dom) {
     domParent.appendChild(fiber.dom);
-  } else if (fiber.effectTag === 'UPDATE' && fiber.dom !== null) {
+  } else if (fiber.effectTag === 'UPDATE' && fiber.dom) {
     updateDom(fiber.dom, fiber.alternate.props, fiber.props);
   } else if (fiber.effectTag === 'DELETION') {
     domParent.removeChild(fiber.dom);
@@ -154,7 +154,7 @@ function reconcileChildren(wipFiber, elements) {
   let oldFiber = wipFiber.alternate && wipFiber.alternate.child;
   let prevSibling = null;
 
-  while (index < elements.length || oldFiber !== null) {
+  while (index < elements.length || oldFiber) {
     const element = elements[index];
     let newFiber = null;
 
@@ -219,16 +219,9 @@ const rerender = value => {
       onInput: updateValue,
       value: value
     }),
-    Didact.createElement('h2', null, `Hello ${value}`)
+    Didact.createElement('h2', null, 'Hello ', value)
   );
   Didact.render(element, container);
 };
-
-const element = Didact.createElement(
-  'div',
-  { id: 'foo' },
-  Didact.createElement('a', null, 'bar'),
-  Didact.createElement('b')
-);
 
 rerender('World');
